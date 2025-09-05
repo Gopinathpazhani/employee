@@ -24,14 +24,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                sh 'mvn clean compile'
+                bat 'mvn clean compile'
             }
         }
         
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'mvn test'
+                bat 'mvn test'
             }
             post {
                 always {
@@ -44,7 +44,7 @@ pipeline {
         stage('Package') {
             steps {
                 echo 'Packaging the application...'
-                sh 'mvn package -DskipTests'
+                bat 'mvn package -DskipTests'
             }
             post {
                 success {
@@ -57,14 +57,14 @@ pipeline {
         stage('Code Quality Check') {
             steps {
                 echo 'Running code quality checks...'
-                sh 'mvn verify'
+                bat 'mvn verify'
             }
         }
         
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to staging environment...'
-                sh '''
+                bat '''
                     echo "Stopping existing application if running..."
                     pkill -f "demo-1.0.0.jar" || true
                     
@@ -83,7 +83,7 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 echo 'Running integration tests...'
-                sh '''
+                bat '''
                     echo "Testing application endpoints..."
                     curl -f http://localhost:8080/ || exit 1
                     curl -f http://localhost:8080/hello || exit 1
